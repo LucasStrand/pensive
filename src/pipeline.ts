@@ -8,13 +8,15 @@ import { generateFindings } from "./findings/generate.ts";
 import { judgeFindings } from "./findings/judge.ts";
 import { applyBudget } from "./findings/budget.ts";
 import { nominateBravo } from "./standout/nominate.ts";
-import { loadLedger, saveLedger, recordFindings, recordRun, appendRunLog, canPraise, spendPraise, hashFinding } from "./ledger/store.ts";
+import { loadLedger, saveLedger, recordFindings, recordRun, canPraise, spendPraise, hashFinding } from "./ledger/store.ts";
+import { appendReviewEvent, type ReviewSource } from "./ledger/events.ts";
 import { renderReview } from "./render/markdown.ts";
 import type { Finding, Intent, Bravo } from "./schema.ts";
 
 export interface ReviewOptions {
   mode?: DiffMode; base?: string; head?: string; diffFile?: string; cwd?: string;
   title?: string; description?: string; passes?: number; maxComments?: number;
+  source?: Partial<ReviewSource>;  // provenance for the event log (repo/pr/author)
 }
 export interface ReviewResult { markdown: string; intent: Intent; findings: Finding[]; bravo: Bravo | null; diff: DiffSet; }
 
@@ -59,10 +61,9 @@ export async function review(gw: ModelGateway, opts: ReviewOptions): Promise<Rev
   recordFindings(ledger, kept, ledger.runs);
   recordRun(ledger, kept, !!bravo, downgraded);
   saveLedger(diff.repoRoot, ledger);
-  appendRunLog(diff.repoRoot, {
-    ts: new Date().toISOString(), run: ledger.runs, mode: diff.mode, files: diff.files.length, gateway: gw.name,
-    findings: kept.map((f) => ({ hash: hashFinding(f), severity: f.severity, file: f.file, line: f.line, confidence: Number(f.confidence.toFixed(2)), title: f.title })),
-    bravo: bravo ? { what: bravo.what, author: bravo.author } : null, downgraded, dropped: dropped.length,
+  appendReviewEvent(diff.repoRoot, {
+    run: ledger.runs, source: opts.source ?? {}, gateway: gw.name, mode: diff.mode, files: diff.files.length,
+    findings: kept, findingHash: hashFinding, bravo, downgraded, dropped: dropped.length,
   });
 
   const markdown = renderReview({

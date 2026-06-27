@@ -4,7 +4,8 @@ import { dirname, join } from "node:path";
 import { selectGateway } from "./model/select.ts";
 import { review, type ReviewOptions } from "./pipeline.ts";
 import { SEVERITY_WEIGHT, type Severity } from "./schema.ts";
-import { loadLedger, computeStats, markFate, type Fate } from "./ledger/store.ts";
+import { loadLedger, saveLedger, computeStats, type Fate } from "./ledger/store.ts";
+import { recordFeedback, rebuildLedger } from "./ledger/events.ts";
 
 for (const p of [join(process.cwd(), ".env"), join(dirname(fileURLToPath(import.meta.url)), "..", ".env")]) {
   try { (process as any).loadEnvFile(p); } catch { /* none */ }
@@ -38,6 +39,7 @@ const HELP = `pensive — a code reviewer that is quiet on noise, never on bugs.
                  [--cwd d] [--passes N] [--max-comments N] [--fail-on sev] [--json]
   pensive stats                      show evaluation stats (action-rate, severities)
   pensive feedback <hash> <resolved|ignored>   mark a comment fate
+  pensive rebuild                    regenerate the ledger cache from the event log
 
 Env (.env works): ANTHROPIC_API_KEY or OPENROUTER_API_KEY; PENSIVE_GATEWAY.`;
 
@@ -47,10 +49,17 @@ async function main() {
   const [cmd, ...rest] = argv;
 
   if (cmd === "stats") { console.log(JSON.stringify(computeStats(loadLedger(repoRoot())), null, 2)); return; }
+  if (cmd === "rebuild") {
+    const root = repoRoot();
+    const l = rebuildLedger(root);
+    saveLedger(root, l);
+    console.log(`rebuilt ledger from event log: ${l.runs} run(s), ${Object.keys(l.comments).length} comment(s)`);
+    return;
+  }
   if (cmd === "feedback") {
     const [hash, fate] = rest;
     if (!hash || !["resolved", "ignored"].includes(fate)) { console.error("usage: pensive feedback <hash> <resolved|ignored>"); process.exitCode = 2; return; }
-    console.log(markFate(repoRoot(), hash, fate as Fate) ? `marked ${hash} ${fate}` : `no comment with hash ${hash}`);
+    console.log(recordFeedback(repoRoot(), hash, fate as Fate) ? `marked ${hash} ${fate}` : `no comment with hash ${hash}`);
     return;
   }
   if (cmd !== "review") { console.error(`unknown command: ${cmd}\n`); console.log(HELP); process.exitCode = 2; return; }
