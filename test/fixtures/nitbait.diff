@@ -1,0 +1,10 @@
+diff --git a/src/util.ts b/src/util.ts
+index aaaaaaa..bbbbbbb 100644
+--- a/src/util.ts
++++ b/src/util.ts
+@@ -2,4 +2,4 @@ export function greet(name: string) {
+-  const msg = "Hello, " + name
+-  return msg
++  const msg = `Hello, ${name}`;
++  return msg;
+ }

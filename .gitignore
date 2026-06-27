@@ -1,0 +1,8 @@
+node_modules/
+.quiet/
+*.log
+.env
+.pensive/repos/
+.pensive/server-state.json
+*.pem
+.pensive/

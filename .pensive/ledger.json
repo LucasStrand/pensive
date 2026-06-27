@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "runs": 6,
+  "praise": {
+    "tokens": 1,
+    "lastPraiseAt": null,
+    "lastAuthors": []
+  },
+  "comments": {
+    "6afb17cae455": {
+      "file": "(mock)",
+      "title": "Mock finding (plumbing only)",
+      "severity": "nit",
+      "firstSeenRun": 1,
+      "fate": "open"
+    },
+    "eebdc3ef3983": {
+      "file": "src/parse.ts",
+      "title": "CSV parser breaks on quoted fields containing commas",
+      "severity": "critical",
+      "firstSeenRun": 5,
+      "fate": "open"
+    },
+    "294e5d043441": {
+      "file": "src/parse.ts",
+      "title": "Escaped quotes within fields not handled",
+      "severity": "bug",
+      "firstSeenRun": 5,
+      "fate": "open"
+    },
+    "4c0fbf195c42": {
+      "file": "src/parse.ts",
+      "title": "Quote removal only handles outer quotes",
+      "severity": "bug",
+      "firstSeenRun": 5,
+      "fate": "open"
+    },
+    "d2c5333be25e": {
+      "file": "app/cart.py",
+      "title": "Breaking change: skipping first item without caller contract",
+      "severity": "critical",
+      "firstSeenRun": 6,
+      "fate": "open"
+    },
+    "535c669b172a": {
+      "file": "app/cart.py",
+      "title": "Empty or single-item lists will produce incorrect totals",
+      "severity": "bug",
+      "firstSeenRun": 6,
+      "fate": "open"
+    },
+    "ead2ca52d60b": {
+      "file": "app/cart.py",
+      "title": "Empty list causes no iteration",
+      "severity": "bug",
+      "firstSeenRun": 6,
+      "fate": "open"
+    }
+  },
+  "stats": {
+    "findingsTotal": 3,
+    "bySeverity": {
+      "critical": 1,
+      "bug": 2
+    },
+    "bravos": 0,
+    "downgraded": 1
+  }
+}

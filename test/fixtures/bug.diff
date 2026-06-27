@@ -1,0 +1,14 @@
+diff --git a/app/cart.py b/app/cart.py
+index 1111111..2222222 100644
+--- a/app/cart.py
++++ b/app/cart.py
+@@ -8,8 +8,9 @@ class Cart:
+     def total(self, items):
+-        total = 0
+-        for i in range(len(items)):
+-            total += items[i].price
++        total = 0
++        for i in range(1, len(items)):
++            total += items[i].price
++        # start at 1 to skip header row
+         return total
