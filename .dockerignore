@@ -1,0 +1,11 @@
+# Never bake credentials or local state into the image — they go in Fly secrets.
+.env
+*.pem
+.pensive
+node_modules
+.git
+.claude
+.quiet
+test
+scripts
+*.md
