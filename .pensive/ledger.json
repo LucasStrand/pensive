@@ -7,34 +7,6 @@
     "lastAuthors": []
   },
   "comments": {
-    "6afb17cae455": {
-      "file": "(mock)",
-      "title": "Mock finding (plumbing only)",
-      "severity": "nit",
-      "firstSeenRun": 1,
-      "fate": "open"
-    },
-    "eebdc3ef3983": {
-      "file": "src/parse.ts",
-      "title": "CSV parser breaks on quoted fields containing commas",
-      "severity": "critical",
-      "firstSeenRun": 5,
-      "fate": "open"
-    },
-    "294e5d043441": {
-      "file": "src/parse.ts",
-      "title": "Escaped quotes within fields not handled",
-      "severity": "bug",
-      "firstSeenRun": 5,
-      "fate": "open"
-    },
-    "4c0fbf195c42": {
-      "file": "src/parse.ts",
-      "title": "Quote removal only handles outer quotes",
-      "severity": "bug",
-      "firstSeenRun": 5,
-      "fate": "open"
-    },
     "d2c5333be25e": {
       "file": "app/cart.py",
       "title": "Breaking change: skipping first item without caller contract",

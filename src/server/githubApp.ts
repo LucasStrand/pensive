@@ -13,8 +13,9 @@ function privateKey(): string {
   throw new Error("set GITHUB_APP_PRIVATE_KEY_PATH (path to the .pem) or GITHUB_APP_PRIVATE_KEY");
 }
 
-// App-level JWT (RS256), valid ~9 min, used only to mint installation tokens.
-function appJwt(): string {
+// App-level JWT (RS256), valid ~9 min, used to mint installation tokens and to
+// call app-scoped endpoints (GET /app, GET /app/installations) in the doctor.
+export function appJwt(): string {
   const appId = process.env.GITHUB_APP_ID;
   if (!appId) throw new Error("set GITHUB_APP_ID");
   const now = Math.floor(Date.now() / 1000);
