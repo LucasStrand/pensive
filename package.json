@@ -8,6 +8,7 @@
   "scripts": {
     "pensive": "node src/cli.ts",
     "verify": "node scripts/verify.ts",
+    "guard:verify": "node scripts/guard-verify.ts",
     "doctor": "node scripts/doctor.ts",
     "server": "node src/server/index.ts"
   },
